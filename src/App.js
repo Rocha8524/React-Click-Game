@@ -1,36 +1,45 @@
 import React, { Component } from "react";
-import FriendCard from "./components/FriendCard";
+import matchCard from "./components/matchCard";
 import Wrapper from "./components/Wrapper";
 import Title from "./components/Title";
-import friends from "./friends.json";
+import matches from "./matches.json";
 
 class App extends Component {
-  // Setting this.state.friends to the friends json array
+  // Setting this.state.matches to the matches json array
   state = {
-    friends
+    matches,
+    score: 0,
+    highscore: 0
   };
 
-  removeFriend = id => {
-    // Filter this.state.friends for friends with an id not equal to the id being removed
-    const friends = this.state.friends.filter(friend => friend.id !== id);
-    // Set this.state.friends equal to the new friends array
-    this.setState({ friends });
-  };
+  clickCount = id => {
+    this.state.matches.find((o, i) => {
+      if (o.id === id) {
+        if(matches[i].count === 0){
+          matches[i].count = matches[i].count + 1;
+          this.setState({score : this.state.score + 1}, function(){
+            console.log(this.state.score);
+          });
+          this.state.matches.sort(() => Math.random() - 0.5)
+          return true; 
+        } else {
+          this.gameOver();
+        }
+      }
+    });
+  }
 
-  // Map over this.state.friends and render a FriendCard component for each friend object
+  // Map over this.state.matches and render a matchCard component for each match object
   render() {
     return (
       <Wrapper>
-        <Title>Friends List</Title>
-        {this.state.friends.map(friend => (
-          <FriendCard
-            removeFriend={this.removeFriend}
-            id={friend.id}
-            key={friend.id}
-            name={friend.name}
-            image={friend.image}
-            occupation={friend.occupation}
-            location={friend.location}
+        <Title>Cartoon Character's Roulette Game</Title>
+        {this.state.matches.map(match => (
+          <matchCard
+            clickCount={this.clickCount}
+            id={match.id}
+            key={match.id}
+            image={match.image}
           />
         ))}
       </Wrapper>
