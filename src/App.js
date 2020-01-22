@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import matchCard from "./components/matchCard";
+import Card from "./components/Card";
 import Wrapper from "./components/Wrapper";
-import Title from "./components/Title";
-import matches from "./matches.json";
+import Header from "./components/Header";
+import cards from "./cards.json";
 
 class App extends Component {
-  // Setting this.state.matches to the matches json array
+  // Setting this.state.cards to the cards json array
   state = {
-    matches,
+    cards,
     score: 0,
     highscore: 0
   };
@@ -18,8 +18,8 @@ class App extends Component {
         console.log(this.state.highscore);
       });
     }
-    this.state.matches.forEach(matchCard => {
-      matchCard.count = 0;
+    this.state.cards.forEach(cardCard => {
+      cardCard.count = 0;
     });
     alert(`Game Over :( \nscore: ${this.state.score}`);
     this.setState({score: 0});
@@ -27,14 +27,14 @@ class App extends Component {
   }
 
   clickCount = id => {
-    this.state.matches.find((o, i) => {
+    this.state.cards.find((o, i) => {
       if (o.id === id) {
-        if(matches[i].count === 0){
-          matches[i].count = matches[i].count + 1;
+        if(cards[i].count === 0){
+          cards[i].count = cards[i].count + 1;
           this.setState({score : this.state.score + 1}, function(){
             console.log(this.state.score);
           });
-          this.state.matches.sort(() => Math.random() - 0.5)
+          this.state.cards.sort(() => Math.random() - 0.5)
           return true; 
         } else {
           this.gameOver();
@@ -43,17 +43,17 @@ class App extends Component {
     });
   }
 
-  // Map over this.state.matches and render a matchCard component for each match object
+  // Map over this.state.cards and render a Card component for each card object
   render() {
     return (
       <Wrapper>
-        <Title>Cartoon Character's Roulette Game</Title>
-        {this.state.matches.map(match => (
-          <matchCard
+        <Header score={this.state.score} highscore={this.state.highscore}>Cartoon Character's Roulette Game</Header>
+        {this.state.cards.map(card => (
+          <Card
             clickCount={this.clickCount}
-            id={match.id}
-            key={match.id}
-            image={match.image}
+            id={card.id}
+            key={card.id}
+            image={card.image}
           />
         ))}
       </Wrapper>
