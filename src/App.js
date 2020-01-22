@@ -27,6 +27,7 @@ class App extends Component {
   }
 
   clickCount = id => {
+    // eslint-disable-next-line
     this.state.cards.find((o, i) => {
       if (o.id === id) {
         if(cards[i].count === 0){
